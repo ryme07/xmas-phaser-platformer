@@ -4,10 +4,11 @@ var fs = require("fs");
 
 var managePage = require("./managePage");
 
-const PORT = "8083";
+const PORT = "8080";
 
 var serveur = http.createServer(treatReq);
 serveur.listen(PORT);
+console.log(`server on ${PORT}`);
 
 function treatReq(request, response) {
   var myObj = url.parse(request.url);
