@@ -1,3 +1,28 @@
+.hello{
+    display: block;
+}
+h1 {
+    font-size: 20px;
+    margin-bottom: 50px;
+}
 body {
-  background-color: blue;
+    height: 100vh;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  
+}
+canvas{
+  
+}
+
+@media(max-width:1200px){
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .hello{
+        display: none;
+    }
 }
