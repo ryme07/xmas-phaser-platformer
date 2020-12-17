@@ -1,54 +1,26 @@
-var config = {
-  type: Phaser.AUTO,
-  backgroundColor: "#ccccff",
-  width: 800,
-  height: 600,
-  scene: {
-    preload: preload,
-    create: create,
-    update: update,
-  },
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 500 },
-    },
-  },
+var games = {
+  scene: null,
+  world: world,
+  player: player,
+  cursor: null,
 };
 
-const game = new Phaser.Game(config);
-var cameraControls;
-
 function preload() {
-  this.load.image("tiles", "tilesheet.png");
-  this.load.tilemapTiledJSON("map", "platformer.json");
-  this.load.atlas("player", "player.png", "playerAtlas.json");
+  games.scene = this;
+  games.scene.load.image("tiles", "tilesheet.png");
+  games.scene.load.tilemapTiledJSON("map", "platformer.json");
+  games.scene.load.atlas("player", "player.png", "playerAtlas.json");
 }
 function create() {
-  this.tilemap = this.make.tilemap({ key: "map" });
-  this.tileset = this.tilemap.addTilesetImage("tilesheet", "tiles");
+  games.world.initWorld();
+  games.player.initPlayer();
+  games.player.generatePlayerAnimations();
+  games.world.manageCollider();
+  games.cursor = games.scene.input.keyboard.createCursorKeys();
+  // games.player.aPlayer.play("playerWalk");
 
-  var player = this.add.sprite(200, 200, "player", "Idle1");
-
-  this.downLayer = this.tilemap.createStaticLayer("bot", this.tileset, 0, 0);
-  this.worldLayer = this.tilemap.createStaticLayer("world", this.tileset, 0, 0);
-  this.topLayer = this.tilemap.createStaticLayer("top", this.tileset, 0, 0);
-
-  var cursors = this.input.keyboard.createCursorKeys();
-
-  var controlCameraConfig = {
-    camera: this.cameras.main,
-    left: cursors.left,
-    right: cursors.right,
-    up: cursors.up,
-    down: cursors.down,
-    speed: 0.5,
-  };
-
-  cameraControls = new Phaser.Cameras.Controls.FixedKeyControl(
-    controlCameraConfig
-  );
+  games.world.manageCamera();
 }
 function update(time, delta) {
-  cameraControls.update(delta);
+  games.player.manageMove();
 }
