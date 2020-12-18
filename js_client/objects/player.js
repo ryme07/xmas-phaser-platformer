@@ -3,13 +3,9 @@ var player = {
   isJumping: false,
 
   initPlayer: function () {
-    this.aPlayer = games.scene.physics.add.sprite(
-      200,
-      200,
-      "player",
-      "player_stand"
-    );
+    this.aPlayer = games.scene.physics.add.sprite(games.world.positionStart.x,games.world.positionStart.y,"player","player_stand");
     this.aPlayer.setCollideWorldBounds(true);
+    this.aPlayer.setOrigin(0.5,0.9);
   },
 
   generatePlayerAnimations: function () {
@@ -36,19 +32,22 @@ var player = {
   },
 
   manageMove: function () {
+
     if (games.cursor.left.isDown) {
       this.aPlayer.setVelocityX(-200);
       this.aPlayer.setFlip(true, false);
     } else if (games.cursor.right.isDown) {
       this.aPlayer.setVelocityX(200);
       this.aPlayer.setFlip(false, false);
+
     } else {
+
       this.aPlayer.setVelocityX(0);
     }
 
     //jump animation
     if (games.cursor.up.isDown && this.aPlayer.body.onFloor()) {
-      this.aPlayer.setVelocityY(-320);
+      this.aPlayer.setVelocityY(-347);
     }
 
     if (this.aPlayer.body.onFloor()) {
@@ -59,7 +58,9 @@ var player = {
 
     if (this.isJumping) {
       this.aPlayer.setTexture("player", "player_jump");
+
     } else {
+
       if (games.cursor.left.isDown) {
         this.aPlayer.anims.play("playerWalk", true);
       } else if (games.cursor.right.isDown) {
